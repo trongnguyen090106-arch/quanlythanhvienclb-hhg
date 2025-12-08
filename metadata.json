@@ -1,0 +1,7 @@
+{
+  "name": "ClubManager AI",
+  "description": "Hệ thống quản lý câu lạc bộ thông minh tích hợp Gemini AI để lên ý tưởng sự kiện và quản lý thành viên.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

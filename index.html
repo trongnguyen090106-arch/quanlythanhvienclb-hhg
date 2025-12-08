@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClubManager AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f1f5f9; /* Slate-100 */
+        color: #1e293b; /* Slate-800 */
+      }
+      
+      /* Scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8; 
+      }
+
+      /* Print Styles for PDF Export */
+      @media print {
+        @page {
+          margin: 20mm 15mm 20mm 20mm; /* Top Right Bottom Left (Standard VN Margin) */
+          size: A4;
+        }
+        
+        body {
+          background-color: white;
+          font-family: 'Times New Roman', serif !important; /* Mandatory for VN Legal Docs */
+          font-size: 13pt;
+          line-height: 1.5;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        /* Hide UI elements during print */
+        .no-print, 
+        aside, 
+        button, 
+        input,
+        select,
+        .sidebar,
+        .fixed-header,
+        .modal-overlay,
+        .toast {
+          display: none !important;
+        }
+
+        /* Expand content to full width */
+        main, #root, .print-container {
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+          height: auto !important;
+          overflow: visible !important;
+          position: static !important;
+        }
+
+        /* Show elements only meant for printing */
+        .print-only-visible {
+          display: block !important;
+        }
+        
+        .print-table-row {
+           display: table-row !important;
+        }
+
+        /* Reset card styles for document look */
+        .card, .bg-white, .shadow-sm, .rounded-3xl, .rounded-2xl {
+          box-shadow: none !important;
+          border: none !important;
+          border-radius: 0 !important;
+          background: transparent !important;
+        }
+        
+        /* Typography for print */
+        h1, h2, h3, h4, h5, h6 {
+          color: black !important;
+          font-family: 'Times New Roman', serif !important;
+        }
+        
+        p, span, div, td, th {
+          color: black !important;
+        }
+        
+        a {
+          text-decoration: none !important;
+          color: black !important;
+        }
+
+        /* Table Borders for Reports */
+        table.legal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        
+        table.legal-table th, table.legal-table td {
+            border: 1px solid black;
+            padding: 5px 8px;
+            text-align: left;
+            font-size: 12pt;
+        }
+        
+        table.legal-table th {
+            font-weight: bold;
+            text-align: center;
+            background-color: #f0f0f0 !important;
+        }
+
+        /* Helper for Legal Header Layout */
+        .legal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+        
+        .legal-header-left {
+            text-align: center;
+            width: 45%;
+        }
+        
+        .legal-header-right {
+            text-align: center;
+            width: 55%;
+        }
+
+        .quoc-hieu {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12pt;
+        }
+
+        .tieu-ngu {
+            font-weight: bold;
+            font-size: 13pt;
+            padding-bottom: 5px;
+            position: relative;
+        }
+        
+        .tieu-ngu:after {
+            content: "";
+            display: block;
+            width: 120px;
+            border-bottom: 1px solid black;
+            margin: 5px auto 0;
+        }
+
+        .ten-don-vi {
+            font-weight: normal;
+            font-size: 12pt;
+            text-transform: uppercase;
+        }
+        
+        .so-ky-hieu {
+            font-size: 12pt;
+        }
+
+        .document-title {
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 15pt;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            page-break-inside: avoid;
+        }
+        
+        .signature-block {
+            text-align: center;
+            width: 40%;
+        }
+        
+        .signature-title {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12pt;
+        }
+        
+        .signature-role {
+            font-style: italic;
+            font-size: 12pt;
+        }
+        
+        .signature-space {
+            height: 80px;
+        }
+    }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.1",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
+    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "react": "https://aistudiocdn.com/react@^19.2.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
