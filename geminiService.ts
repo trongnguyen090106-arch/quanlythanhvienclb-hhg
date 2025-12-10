@@ -2,7 +2,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { ClubEvent, StudySession, AIBadgeDesign } from "../types";
 
-const apiKey = process.env.API_KEY || '';
+const apiKey = process.env.GEMINI_API_KEY || '';
 const ai = new GoogleGenAI({ apiKey });
 
 export const generateEventIdeas = async (clubType: string, season: string): Promise<string> => {
